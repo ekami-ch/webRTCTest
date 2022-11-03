@@ -5,23 +5,28 @@ const express = require('express')
 const app = express()
 const https = require('https');
 const server = https.createServer({ key, cert }, app);
+var engines = require('consolidate')
+const path = require("path");
 
-const port = 3002;
+const port = 3008;
 server.listen(port, () => {
   console.log(`Server is listening on https://localhost:${port}`);
 });
 const io = require('socket.io')(server)
 const { v4: uuidV4 } = require('uuid')
 
-app.set('view engine', 'ejs')
-app.use(express.static('public'))
+/*app.set('views', '/views');
+app.engine('html', engines.mustache);
+app.set('view engine', 'html');*/
+
+app.use(express.static(path.join(__dirname,'public')));
 
 app.get('/', (req, res) => {
   res.redirect(`/${uuidV4()}`)
 })
 
 app.get('/:room', (req, res) => {
-  res.render('room', { roomId: req.params.room })
+  res.sendFile(path.join(__dirname,'public', 'room.html'));
 })
 
 io.on('connection', socket => {
