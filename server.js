@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/:room', (req, res) => {
-  res.sendFile(path.join(__dirname,'public', 'room.html'));
+  res.sendFile(path.join(__dirname,'public', 'index.html'));
 })
 
 io.on('connection', socket => {
